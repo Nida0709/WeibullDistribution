@@ -20,6 +20,10 @@ timetimetime = 230
 
 
 
+
+
+
+
 #summary df making
 Vertical_axis1 = []
 Vertical_axis2 = []
@@ -31,7 +35,7 @@ for i in range(0, timetimetime+10, 10):
 
 
 for row in df['k-cycles']:
-    for i in range(0, 240, 10):
+    for i in range(0, timetimetime+10, 10):
         if row>=i and row<i+10:
             Vertical_axis1[int(i/10)] += 1
 for i in range(0, timetimetime+10, 10):
@@ -45,6 +49,7 @@ np_Vertical_axis1 = np.array(Vertical_axis1)
 np_Vertical_axis2 = np.array(Vertical_axis2)
 np_Horizontal_axis1 = np.array(Horizontal_axis1)
 
+#fig set
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(2, 2, 1)
 ax2 = fig1.add_subplot(2, 2, 2)
@@ -69,11 +74,11 @@ ax3.plot(np_Horizontal_axis1, np_Vertical_axis1)
 
 
 
-
+#Weibull Distribution making
 np_Horizontal_axis2 = np.log(np_Horizontal_axis1)
 np_Vertical_axis3 = np.log(np.log(1/(1-np_Vertical_axis2/len(df))))     #this is 「lnln(1/(1/F(x)))」
 
-
+#error removing ex."inf" or "-inf"
 df4 = pd.DataFrame(np_Horizontal_axis2, columns=['x'])
 df4['y'] = np_Vertical_axis3
 rom = []        #for recording
@@ -86,36 +91,6 @@ ax4.set_ylabel('lnln(1/1-F(x))')
 ax4.plot(df4['x'], df4['y'])
 
 
-#liner from sklean
-#from sklearn.linear_model import LinearRegression
-
-#X = np.array(df4['x'].values).reshape(-1, 1)
-#Y = np.array(df4['y'].values).reshape(-1, 1)
-#model_lr = LinearRegression()
-#model_lr.fit(X, Y)
-
-#ax4.plot(X, model_lr.predict(X))
-
-
-#print('モデル関数の回帰変数 w1: %.3f' %model_lr.coef_)
-#print('モデル関数の切片 w2: %.3f' %model_lr.intercept_)
-#print('y= %.3fx + %.3f' % (model_lr.coef_ , model_lr.intercept_))
-#print('決定係数 R^2： ', model_lr.score(X, Y))
-
-
-
-#make pdf
-#m = model_lr.coef_
-#a = math.exp(model_lr.intercept_/m)
-
-
-#np_x_values = np.linspace(0, timetimetime, 10000)
-#m_list = np.full(len(np_x_values), m)
-#temp = np.exp(-1**np.power(np_x_values/a, m_list))
-#np_y_values = 1 - np.exp(-1*np.power(np_x_values/a, m_list))
-
-#fig2 = plt.plot(np_x_values, np_y_values)
-#plt.show()
 
 
 output_correlationCoefficien = 1000.0
@@ -126,7 +101,7 @@ i=0
 for gamma in np.arange(0.01, 10, 0.01):#1000
     for alpha in np.arange(0.01, 10, 0.01): #1000
         for m in np.arange(0.1, 10, 0.1):#100
-            #遊び
+            #time left function
             whole = 100*1000*1000
             i+=1
             temp = i
@@ -142,15 +117,19 @@ for gamma in np.arange(0.01, 10, 0.01):#1000
 
             x = np.array(df4['x'].values)
             y = m * (np.log(x - gamma) - math.log(alpha))
-
+            #相関係数法(pandas)
             #s1 = pd.Series(df4['y'].values)
             #s2 = pd.Series(y)
             #res = s1.corr(s2)
 
-            y1 = np.array(df4['y'].values)
-            y2 = np.array(y)
+            #相関係数法(numpy)→こっちの方が優秀
+            #y1 = np.array(df4['y'].values)
+            #y2 = np.array(y)
             #res = np.corrcoef(y1, y2)[0, 1]
 
+            #最小二乗法
+            y1 = np.array(df4['y'].values)
+            y2 = np.array(y)
             delta = np.square(y1-y2)
             res = np.sum(delta)
 
