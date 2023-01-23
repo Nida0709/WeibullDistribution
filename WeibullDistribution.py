@@ -17,12 +17,12 @@ df = pd.DataFrame({'k-cycles':
                     155, 156, 157, 157, 157, 157, 158, 159, 162,
                     163, 163, 164, 166, 166, 168, 170, 174, 182]})
 #initial setting
-#timetimetime = 230
-#rangerange = 10
+timetimetime = 230
+rangerange = 10
 
 #custom setting
-timetimetime = 1400
-rangerange = 50
+#timetimetime = 1400
+#rangerange = 50
 
 
 
