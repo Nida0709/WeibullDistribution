@@ -16,7 +16,13 @@ df = pd.DataFrame({'k-cycles':
                     144, 145, 146, 148, 148, 149, 151, 151, 152,
                     155, 156, 157, 157, 157, 157, 158, 159, 162,
                     163, 163, 164, 166, 166, 168, 170, 174, 182]})
-timetimetime = 230
+#initial setting
+#timetimetime = 230
+#rangerange = 10
+
+#custom setting
+timetimetime = 1400
+rangerange = 50
 
 
 
@@ -28,21 +34,21 @@ timetimetime = 230
 Vertical_axis1 = []
 Vertical_axis2 = []
 Horizontal_axis1 = []
-for i in range(0, timetimetime+10, 10):
+for i in np.arange(0, timetimetime+rangerange, rangerange):
     Vertical_axis1.append(0)        #Vertical axis1
     Vertical_axis2.append(0)        #Vertical axis2
     Horizontal_axis1.append(i)      #Horizontal axis
 
 
 for row in df['k-cycles']:
-    for i in range(0, timetimetime+10, 10):
-        if row>=i and row<i+10:
-            Vertical_axis1[int(i/10)] += 1
-for i in range(0, timetimetime+10, 10):
+    for i in np.arange(0, timetimetime+rangerange, rangerange):
+        if row>=i and row<i+rangerange:
+            Vertical_axis1[int(i/rangerange)] += 1
+for i in np.arange(0, timetimetime+rangerange, rangerange):
     if i == 0:
-        Vertical_axis2[int(i/10)] = Vertical_axis1[int(i/10)]
+        Vertical_axis2[int(i/rangerange)] = Vertical_axis1[int(i/rangerange)]
     else:
-        Vertical_axis2[int(i/10)] = Vertical_axis2[int((i-10)/10)] + Vertical_axis1[int(i/10)]
+        Vertical_axis2[int(i/rangerange)] = Vertical_axis2[int((i-rangerange)/rangerange)] + Vertical_axis1[int(i/rangerange)]
 
 #transform from list to ndarray
 np_Vertical_axis1 = np.array(Vertical_axis1)
@@ -60,12 +66,12 @@ ax4 = fig1.add_subplot(2, 2, 4)
 ax1.set_title('Number of failures')
 ax1.set_xlabel('Repeated cycle number (10^3)')
 ax1.set_ylabel('Number of failures')
-ax1.bar(np_Horizontal_axis1, np_Vertical_axis1, width=10)
+ax1.bar(np_Horizontal_axis1, np_Vertical_axis1, width=rangerange)
 
 ax2.set_title('Total number of failures')
 ax2.set_xlabel('Repeated of Number (10^3)')
 ax2.set_ylabel('Total number of failures')
-ax2.bar(np_Horizontal_axis1, np_Vertical_axis2, width=10)
+ax2.bar(np_Horizontal_axis1, np_Vertical_axis2, width=rangerange)
 
 ax3.set_title('Probabilty densify function')
 ax3.plot(np_Horizontal_axis1, np_Vertical_axis1)
@@ -150,12 +156,6 @@ x = np.array(df4['x'].values)
 y = output_m * (np.log(x - output_gamma) - math.log(output_alpha))
 ax4.plot(x, y)
 
-
-
-
-
-
-
 print('res')
 print(output_correlationCoefficien)
 print('alpha')
@@ -164,6 +164,12 @@ print('gamma')
 print(output_gamma)
 print('m')
 print(output_m)
+
+
+
+
+
+
 
 
 
