@@ -91,6 +91,8 @@ rom = []        #for recording
 for i in range(len(df4)):       #inf, -inf filter
     if str(df4['y'][i]) == '-inf' or str(df4['y'][i]) == 'inf':
         rom.append(i)
+    elif str(df4['x'][i]) == '-inf' or str(df4['x'][i]) == 'inf':
+        rom.append(i)
 df4 = df4.drop(index=rom).reset_index()
 ax4.set_xlabel('ln(t)')
 ax4.set_ylabel('lnln(1/1-F(x))')
